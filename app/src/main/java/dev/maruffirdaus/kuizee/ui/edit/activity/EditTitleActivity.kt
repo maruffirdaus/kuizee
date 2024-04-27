@@ -24,7 +24,7 @@ import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.maruffirdaus.kuizee.R
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.ActivityEditTitleBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ import kotlin.properties.Delegates
 
 class EditTitleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTitleBinding
-    private lateinit var topicData: Topic
+    private lateinit var quizData: Quiz
     private var bitmap: Bitmap? = null
     private var status by Delegates.notNull<Int>()
 
@@ -54,21 +54,21 @@ class EditTitleActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        topicData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_TOPIC, Topic::class.java) ?: Topic()
+        quizData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EXTRA_QUIZ, Quiz::class.java) ?: Quiz()
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(EXTRA_TOPIC) ?: Topic()
+            intent.getParcelableExtra(EXTRA_QUIZ) ?: Quiz()
         }
         status = intent.getIntExtra(EXTRA_STATUS, ADD)
     }
 
     private fun setColor() {
-        if (topicData.color != null) {
+        if (quizData.color != null) {
             DynamicColors.applyToActivityIfAvailable(
                 this,
                 DynamicColorsOptions.Builder()
-                    .setContentBasedSource(topicData.color!!)
+                    .setContentBasedSource(quizData.color!!)
                     .build()
             )
         }
@@ -133,9 +133,9 @@ class EditTitleActivity : AppCompatActivity() {
             if (bitmap != null) {
                 backgroundHeader.setImageBitmap(bitmap)
                 backgroundHeader.alpha = 0.3F
-            } else if (topicData.img != null) {
+            } else if (quizData.img != null) {
                 Glide.with(this@EditTitleActivity)
-                    .load(topicData.img!!.toUri())
+                    .load(quizData.img!!.toUri())
                     .into(backgroundHeader)
                 backgroundHeader.alpha = 0.3F
             }
@@ -147,12 +147,12 @@ class EditTitleActivity : AppCompatActivity() {
             backgroundHeader.layoutParams.height = (resources.displayMetrics.widthPixels / 3) * 4
 
             if (status == EDIT) {
-                appBar.title = getString(R.string.edit_topic)
-                if (topicData.img != null) {
+                appBar.title = getString(R.string.edit_quiz)
+                if (quizData.img != null) {
                     setHeaderImg()
                 }
-                titleEditText.setText(topicData.title)
-                descEditText.setText(topicData.desc)
+                titleEditText.setText(quizData.title)
+                descEditText.setText(quizData.desc)
             }
         }
     }
@@ -170,7 +170,7 @@ class EditTitleActivity : AppCompatActivity() {
             var isEmptyField: Boolean
 
             nextButton.setOnClickListener {
-                with(topicData) {
+                with(quizData) {
                     title = titleEditText.text.toString().trim()
                     desc = descEditText.text.toString().trim()
 
@@ -217,16 +217,16 @@ class EditTitleActivity : AppCompatActivity() {
                                     e.printStackTrace()
                                 }
 
-                                topicData.img = insertUri.toString()
-                                topicData.color = getDominantColor(bitmap!!)
+                                quizData.img = insertUri.toString()
+                                quizData.color = getDominantColor(bitmap!!)
                             }
 
-                            intent.putExtra(EditQuestionActivity.EXTRA_TOPIC, topicData)
+                            intent.putExtra(EditQuestionActivity.EXTRA_QUIZ, quizData)
                             finish()
                             startActivity(intent)
                         }
                     } else {
-                        intent.putExtra(EditQuestionActivity.EXTRA_TOPIC, topicData)
+                        intent.putExtra(EditQuestionActivity.EXTRA_QUIZ, quizData)
                         finish()
                         startActivity(intent)
                     }
@@ -262,7 +262,7 @@ class EditTitleActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_TOPIC = "extra_topic"
+        const val EXTRA_QUIZ = "extra_quiz"
         const val EXTRA_STATUS = "extra_status"
         const val ADD = 0
         const val EDIT = 1

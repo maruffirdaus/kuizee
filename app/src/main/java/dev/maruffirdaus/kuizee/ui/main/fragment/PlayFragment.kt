@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.maruffirdaus.kuizee.R
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.FragmentPlayBinding
 import dev.maruffirdaus.kuizee.ui.helper.ViewModelFactory
 import dev.maruffirdaus.kuizee.ui.main.activity.AppInfoActivity
@@ -34,7 +34,7 @@ class PlayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllTopicData()
+        viewModel.getQuizData()
         viewModel.getLeaderboardData()
         observeData()
         setRecyclerView()
@@ -51,8 +51,8 @@ class PlayFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
-        viewModel.listTopic.observe(viewLifecycleOwner) {
-            adapter.setListTopic(it)
+        viewModel.listQuiz.observe(viewLifecycleOwner) {
+            adapter.setListQuiz(it)
             if (it.isEmpty()) {
                 binding.emptyScreen.visibility = View.VISIBLE
             } else {
@@ -79,9 +79,9 @@ class PlayFragment : Fragment() {
 
     private fun setOnClickAdapter() {
         adapter.setOnItemClickCallback(object : PlayAdapter.OnItemClickCallback {
-            override fun onItemClicked(topicData: Topic) {
+            override fun onItemClicked(quizData: Quiz) {
                 val intent = Intent(requireActivity(), PlayActivity::class.java)
-                intent.putExtra(PlayActivity.EXTRA_TOPIC, topicData)
+                intent.putExtra(PlayActivity.EXTRA_QUIZ, quizData)
 
                 startActivity(intent)
             }

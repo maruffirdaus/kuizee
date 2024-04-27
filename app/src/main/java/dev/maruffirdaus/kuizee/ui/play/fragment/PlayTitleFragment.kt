@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import dev.maruffirdaus.kuizee.R
 import dev.maruffirdaus.kuizee.data.model.Play
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.data.model.SidebarData
-import dev.maruffirdaus.kuizee.data.model.Topic
 import dev.maruffirdaus.kuizee.databinding.FragmentPlayTitleBinding
 
 class PlayTitleFragment : Fragment() {
     private lateinit var binding: FragmentPlayTitleBinding
-    private lateinit var topicData: Topic
+    private lateinit var quizData: Quiz
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +38,11 @@ class PlayTitleFragment : Fragment() {
     }
 
     private fun getData() {
-        topicData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(EXTRA_TOPIC, Topic::class.java) ?: Topic()
+        quizData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(EXTRA_QUIZ, Quiz::class.java) ?: Quiz()
         } else {
             @Suppress("DEPRECATION")
-            arguments?.getParcelable(EXTRA_TOPIC) ?: Topic()
+            arguments?.getParcelable(EXTRA_QUIZ) ?: Quiz()
         }
     }
 
@@ -67,16 +67,16 @@ class PlayTitleFragment : Fragment() {
 
     private fun setContent() {
         with(binding) {
-            if (topicData.img != null) {
+            if (quizData.img != null) {
                 context?.let {
                     Glide.with(it)
-                        .load(topicData.img)
+                        .load(quizData.img)
                         .into(backgroundHeader)
                 }
                 backgroundHeader.alpha = 0.3F
             }
-            title.text = topicData.title
-            contentDescription.text = topicData.desc
+            title.text = quizData.title
+            contentDescription.text = quizData.desc
         }
     }
 
@@ -86,17 +86,17 @@ class PlayTitleFragment : Fragment() {
                 val bundle = Bundle()
                 var questionStatus = arrayOf<SidebarData>()
 
-                for (i in topicData.questions) {
+                for (i in quizData.questions) {
                     questionStatus += SidebarData()
                 }
 
-                if (topicData.questions[0].type == 0) {
+                if (quizData.questions[0].type == 0) {
                     bundle.putParcelable(
                         PlayMultipleChoiceFragment.EXTRA_PLAY,
                         Play(
-                            topicData.img?.toUri(),
-                            topicData.title,
-                            topicData.questions,
+                            quizData.img?.toUri(),
+                            quizData.title,
+                            quizData.questions,
                             questionStatus
                         )
                     )
@@ -109,9 +109,9 @@ class PlayTitleFragment : Fragment() {
                     bundle.putParcelable(
                         PlayShortFormFragment.EXTRA_PLAY,
                         Play(
-                            topicData.img?.toUri(),
-                            topicData.title,
-                            topicData.questions,
+                            quizData.img?.toUri(),
+                            quizData.title,
+                            quizData.questions,
                             questionStatus
                         )
                     )
@@ -130,6 +130,6 @@ class PlayTitleFragment : Fragment() {
     }
 
     companion object {
-        const val EXTRA_TOPIC = "extra_topic"
+        const val EXTRA_QUIZ = "extra_quiz"
     }
 }

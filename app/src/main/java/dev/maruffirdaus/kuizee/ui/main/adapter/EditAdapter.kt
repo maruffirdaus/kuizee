@@ -6,23 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.CardRowItemBinding
-import dev.maruffirdaus.kuizee.ui.helper.TopicDiffCallback
+import dev.maruffirdaus.kuizee.ui.helper.QuizDiffCallback
 
 class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
-    private val listTopic = ArrayList<Topic>()
+    private val listQuiz = ArrayList<Quiz>()
     private var deleteButtonStatus = false
     var selectAllStatus = false
     private var selectedItems = intArrayOf()
     private lateinit var onItemClickCallback: OnItemClickCallback
     private lateinit var onItemLongClickCallback: OnItemLongClickCallback
 
-    fun setListTopic(listTopic: List<Topic>) {
-        val diffCallback = TopicDiffCallback(this.listTopic, listTopic)
+    fun setListQuiz(listQuiz: List<Quiz>) {
+        val diffCallback = QuizDiffCallback(this.listQuiz, listQuiz)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.listTopic.clear()
-        this.listTopic.addAll(listTopic)
+        this.listQuiz.clear()
+        this.listQuiz.addAll(listQuiz)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -56,10 +56,10 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TopicViewHolder, position: Int) {
-        holder.bind(listTopic[position], position)
+        holder.bind(listQuiz[position], position)
         holder.itemView.setOnClickListener {
             if (!deleteButtonStatus) {
-                onItemClickCallback.onItemClicked(listTopic[position])
+                onItemClickCallback.onItemClicked(listQuiz[position])
             } else {
                 holder.binding.checkbox.isChecked = !holder.binding.checkbox.isChecked
             }
@@ -67,15 +67,15 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return listTopic.size
+        return listQuiz.size
     }
 
     inner class TopicViewHolder(internal val binding: CardRowItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(topicData: Topic, adapterPosition: Int) {
+        fun bind(quizData: Quiz, adapterPosition: Int) {
             with(binding) {
                 media.visibility = View.GONE
-                title.text = topicData.title
-                supportingText.text = topicData.desc
+                title.text = quizData.title
+                supportingText.text = quizData.desc
                 card.setOnLongClickListener {
                     onItemLongClickCallback.onItemLongClicked(binding)
                     true
@@ -99,14 +99,14 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
                 selectButton.visibility = View.GONE
                 editButton.visibility = View.VISIBLE
                 editButton.setOnClickListener {
-                    onItemClickCallback.onItemClicked(topicData)
+                    onItemClickCallback.onItemClicked(quizData)
                 }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(topicData: Topic)
+        fun onItemClicked(quizData: Quiz)
     }
 
     interface OnItemLongClickCallback {

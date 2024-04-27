@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.maruffirdaus.kuizee.R
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.CardRowItemBinding
 import dev.maruffirdaus.kuizee.databinding.FragmentEditBinding
 import dev.maruffirdaus.kuizee.ui.edit.activity.EditTitleActivity
@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 class EditFragment : Fragment() {
     private lateinit var binding: FragmentEditBinding
     private lateinit var viewModel: MainViewModel
-    private var listTopic = listOf<Topic>()
+    private var listQuiz = listOf<Quiz>()
     private val adapter = EditAdapter()
 
     override fun onCreateView(
@@ -66,12 +66,12 @@ class EditFragment : Fragment() {
             @Suppress("KotlinConstantConditions")
             viewModel.setLoading(isLoading)
             withContext(Dispatchers.IO) {
-                listTopic = viewModel.mQuizRepository.getAllTopicData()
+                listQuiz = viewModel.mQuizRepository.getQuizData()
                 isLoading = false
             }
-            adapter.setListTopic(listTopic)
-            viewModel.replaceTopicData(listTopic)
-            if (listTopic.isEmpty()) {
+            adapter.setListQuiz(listQuiz)
+            viewModel.replaceTopicData(listQuiz)
+            if (listQuiz.isEmpty()) {
                 binding.emptyScreen.visibility = View.VISIBLE
             } else {
                 binding.emptyScreen.visibility = View.GONE
@@ -84,8 +84,8 @@ class EditFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
-        viewModel.listTopic.observe(viewLifecycleOwner) {
-            adapter.setListTopic(it)
+        viewModel.listQuiz.observe(viewLifecycleOwner) {
+            adapter.setListQuiz(it)
             if (it.isEmpty()) {
                 binding.emptyScreen.visibility = View.VISIBLE
             } else {
@@ -104,12 +104,12 @@ class EditFragment : Fragment() {
         getData()
     }
 
-    private fun launchActivity(topicData: Topic) {
+    private fun launchActivity(quizData: Quiz) {
         val intent = Intent(
             requireActivity(), EditTitleActivity::class.java
         )
 
-        intent.putExtra(EditTitleActivity.EXTRA_TOPIC, topicData)
+        intent.putExtra(EditTitleActivity.EXTRA_QUIZ, quizData)
         intent.putExtra(EditTitleActivity.EXTRA_STATUS, EDIT)
 
         requestTopicLauncher.launch(intent)
@@ -143,8 +143,8 @@ class EditFragment : Fragment() {
 
     private fun setOnClickAdapter() {
         adapter.setOnItemClickCallback(object : EditAdapter.OnItemClickCallback {
-            override fun onItemClicked(topicData: Topic) {
-                launchActivity(topicData)
+            override fun onItemClicked(quizData: Quiz) {
+                launchActivity(quizData)
             }
         })
 
@@ -207,7 +207,7 @@ class EditFragment : Fragment() {
 
                 fun delete() {
                     val selectedItems = adapter.getSelected()
-                    viewModel.deleteTopicData(selectedItems)
+                    viewModel.deleteQuizData(selectedItems)
                     getData()
                     hideDeleteSelection()
                 }

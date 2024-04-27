@@ -9,10 +9,10 @@ import dev.maruffirdaus.kuizee.databinding.SidebarCardRowItemBinding
 
 class SidebarAdapter :
     RecyclerView.Adapter<SidebarAdapter.SidebarViewHolder>() {
-    private val listQuestion = ArrayList<SidebarData>()
+    private val listSidebarData = ArrayList<SidebarData>()
 
-    fun setListQuestion(listQuestion: List<SidebarData>) {
-        this.listQuestion.addAll(listQuestion)
+    fun setListSidebarData(listSidebarData: List<SidebarData>) {
+        this.listSidebarData.addAll(listSidebarData)
     }
 
     override fun onCreateViewHolder(
@@ -25,11 +25,11 @@ class SidebarAdapter :
     }
 
     override fun onBindViewHolder(holder: SidebarAdapter.SidebarViewHolder, position: Int) {
-        holder.bind(listQuestion[position], position)
+        holder.bind(listSidebarData[position], position)
     }
 
     override fun getItemCount(): Int {
-        return listQuestion.size
+        return listSidebarData.size
     }
 
     inner class SidebarViewHolder(

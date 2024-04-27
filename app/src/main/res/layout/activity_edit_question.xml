@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:gravity="center"
-            android:text="@string/empty_message_edit_answer"
+            android:text="@string/empty_message_edit_question"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant" />
     </LinearLayout>
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/add"
+        android:text="@string/add_question"
         app:icon="@drawable/ic_add"
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent" />

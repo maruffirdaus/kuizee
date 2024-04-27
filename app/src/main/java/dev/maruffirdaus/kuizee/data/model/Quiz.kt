@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity
 @Parcelize
-data class Topic(
+data class Quiz(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
@@ -32,7 +32,7 @@ data class Topic(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Topic
+        other as Quiz
 
         if (id != other.id) return false
         if (title != other.title) return false

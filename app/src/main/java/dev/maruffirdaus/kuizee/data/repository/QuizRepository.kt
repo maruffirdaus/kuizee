@@ -4,7 +4,7 @@ import android.app.Application
 import dev.maruffirdaus.kuizee.data.database.QuizDao
 import dev.maruffirdaus.kuizee.data.database.QuizRoomDatabase
 import dev.maruffirdaus.kuizee.data.model.Leaderboard
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -17,19 +17,19 @@ class QuizRepository(application: Application) {
         mQuizzesDao = db.quizDao()
     }
 
-    fun insert(topicData: Topic) {
-        executorService.execute { mQuizzesDao.insert(topicData) }
+    fun insert(quizData: Quiz) {
+        executorService.execute { mQuizzesDao.insert(quizData) }
     }
 
-    fun update(topicData: Topic) {
-        executorService.execute { mQuizzesDao.update(topicData) }
+    fun update(quizData: Quiz) {
+        executorService.execute { mQuizzesDao.update(quizData) }
     }
 
-    fun delete(topicData: Topic) {
-        executorService.execute { mQuizzesDao.delete(topicData) }
+    fun delete(quizData: Quiz) {
+        executorService.execute { mQuizzesDao.delete(quizData) }
     }
 
-    suspend fun getAllTopicData(): List<Topic> = mQuizzesDao.getAllTopicData()
+    suspend fun getQuizData(): List<Quiz> = mQuizzesDao.getQuizData()
 
     fun insert(leaderboardData: Leaderboard) {
         executorService.execute { mQuizzesDao.insert(leaderboardData) }

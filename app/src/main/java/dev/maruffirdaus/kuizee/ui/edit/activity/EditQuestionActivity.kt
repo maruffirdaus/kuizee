@@ -20,7 +20,7 @@ import com.google.android.material.color.DynamicColorsOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.maruffirdaus.kuizee.R
 import dev.maruffirdaus.kuizee.data.model.Question
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.ActivityEditQuestionBinding
 import dev.maruffirdaus.kuizee.databinding.CardRowItemBinding
 import dev.maruffirdaus.kuizee.ui.edit.adapter.QuestionAdapter
@@ -33,7 +33,7 @@ class EditQuestionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditQuestionBinding
     private lateinit var viewModel: EditQuestionViewModel
     private val adapter = QuestionAdapter()
-    private lateinit var topicData: Topic
+    private lateinit var quizData: Quiz
     private var status by Delegates.notNull<Int>()
     private var itemPosition by Delegates.notNull<Int>()
 
@@ -60,22 +60,22 @@ class EditQuestionActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        topicData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_TOPIC, Topic::class.java) ?: Topic()
+        quizData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EXTRA_QUIZ, Quiz::class.java) ?: Quiz()
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(EXTRA_TOPIC) ?: Topic()
+            intent.getParcelableExtra(EXTRA_QUIZ) ?: Quiz()
         }
         status = intent.getIntExtra(EXTRA_STATUS, ADD)
-        viewModel.insertQuestion(topicData.questions)
+        viewModel.insertQuestion(quizData.questions)
     }
 
     private fun setColor() {
-        if (topicData.color != null) {
+        if (quizData.color != null) {
             DynamicColors.applyToActivityIfAvailable(
                 this,
                 DynamicColorsOptions.Builder()
-                    .setContentBasedSource(topicData.color!!)
+                    .setContentBasedSource(quizData.color!!)
                     .build()
             )
         }
@@ -85,7 +85,7 @@ class EditQuestionActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == EditAnswerFragment.RESULT_CODE && it.data != null) {
-            with(topicData) {
+            with(quizData) {
                 questions += if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     it.data?.getParcelableExtra(
                         EditIndividualQuestionActivity.EXTRA_RESULT_VALUE,
@@ -105,7 +105,7 @@ class EditQuestionActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == EditAnswerFragment.RESULT_CODE && it.data != null) {
-            with(topicData) {
+            with(quizData) {
                 questions[itemPosition] =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         it.data?.getParcelableExtra(
@@ -123,8 +123,8 @@ class EditQuestionActivity : AppCompatActivity() {
 
     private fun launchActivity(status: Int) {
         val intent = Intent(this@EditQuestionActivity, EditIndividualQuestionActivity::class.java)
-        intent.putExtra(EditIndividualQuestionActivity.EXTRA_IMAGE, topicData.img)
-        intent.putExtra(EditIndividualQuestionActivity.EXTRA_COLOR, topicData.color)
+        intent.putExtra(EditIndividualQuestionActivity.EXTRA_IMAGE, quizData.img)
+        intent.putExtra(EditIndividualQuestionActivity.EXTRA_COLOR, quizData.color)
         intent.putExtra(EditIndividualQuestionActivity.EXTRA_STATUS, status)
 
         if (status == ADD) {
@@ -132,7 +132,7 @@ class EditQuestionActivity : AppCompatActivity() {
         } else {
             intent.putExtra(
                 EditIndividualQuestionActivity.EXTRA_QUESTION,
-                topicData.questions[itemPosition]
+                quizData.questions[itemPosition]
             )
             requestEditQuestionLauncher.launch(intent)
         }
@@ -150,13 +150,13 @@ class EditQuestionActivity : AppCompatActivity() {
 
     private fun setHeader() {
         with(binding) {
-            if (topicData.img != null) {
+            if (quizData.img != null) {
                 Glide.with(this@EditQuestionActivity)
-                    .load(topicData.img!!.toUri())
+                    .load(quizData.img!!.toUri())
                     .into(backgroundHeader)
                 backgroundHeader.alpha = 0.3F
             }
-            appBar.title = topicData.title
+            appBar.title = quizData.title
         }
     }
 
@@ -257,11 +257,11 @@ class EditQuestionActivity : AppCompatActivity() {
             }
 
             saveButton.setOnClickListener {
-                if (topicData.questions.isNotEmpty()) {
+                if (quizData.questions.isNotEmpty()) {
                     if (status == ADD) {
-                        viewModel.insert(topicData)
+                        viewModel.insert(quizData)
                     } else {
-                        viewModel.update(topicData)
+                        viewModel.update(quizData)
                     }
                     finish()
                 } else {
@@ -279,7 +279,7 @@ class EditQuestionActivity : AppCompatActivity() {
                 fun delete() {
                     val selectedItems = adapter.getSelected()
                     var newQuestionData = arrayOf<Question>()
-                    for (i in topicData.questions.indices) {
+                    for (i in quizData.questions.indices) {
                         var isDifferent = true
                         var j = 0
                         while (j < selectedItems.size && isDifferent) {
@@ -287,11 +287,11 @@ class EditQuestionActivity : AppCompatActivity() {
                             j++
                         }
                         if (isDifferent) {
-                            newQuestionData += topicData.questions[i]
+                            newQuestionData += quizData.questions[i]
                         }
                     }
-                    topicData.questions = newQuestionData
-                    viewModel.insertQuestion(topicData.questions)
+                    quizData.questions = newQuestionData
+                    viewModel.insertQuestion(quizData.questions)
                     hideDeleteSelection()
                 }
 
@@ -337,7 +337,7 @@ class EditQuestionActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_TOPIC = "extra_topic"
+        const val EXTRA_QUIZ = "extra_quiz"
         const val EXTRA_STATUS = "extra_status"
         const val ADD = 0
         const val EDIT = 1

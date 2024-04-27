@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import dev.maruffirdaus.kuizee.data.model.Leaderboard
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.data.repository.QuizRepository
 
 class MainViewModel(application: Application) : ViewModel() {
@@ -15,8 +15,8 @@ class MainViewModel(application: Application) : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _listTopic = MutableLiveData<List<Topic>>()
-    lateinit var listTopic: LiveData<List<Topic>>
+    private val _listQuiz = MutableLiveData<List<Quiz>>()
+    lateinit var listQuiz: LiveData<List<Quiz>>
 
     private val _listLeaderboard = MutableLiveData<List<Leaderboard>>()
     lateinit var listLeaderboard: LiveData<List<Leaderboard>>
@@ -28,23 +28,23 @@ class MainViewModel(application: Application) : ViewModel() {
         _loading.value = status
     }
 
-    fun deleteTopicData(selectedItems: IntArray) {
+    fun deleteQuizData(selectedItems: IntArray) {
         for (i in selectedItems) {
-            listTopic.value?.get(i)?.let { mQuizRepository.delete(it) }
+            listQuiz.value?.get(i)?.let { mQuizRepository.delete(it) }
         }
     }
 
-    fun getAllTopicData() {
-        listTopic = liveData {
+    fun getQuizData() {
+        listQuiz = liveData {
             _loading.value = true
-            emit(mQuizRepository.getAllTopicData())
+            emit(mQuizRepository.getQuizData())
             _loading.value = false
         }
     }
 
-    fun replaceTopicData(topicData: List<Topic>) {
-        _listTopic.value = topicData
-        listTopic = _listTopic
+    fun replaceTopicData(quizData: List<Quiz>) {
+        _listQuiz.value = quizData
+        listQuiz = _listQuiz
     }
 
     fun clearLeaderboardData() {

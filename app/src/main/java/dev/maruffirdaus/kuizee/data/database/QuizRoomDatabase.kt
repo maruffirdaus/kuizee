@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.maruffirdaus.kuizee.data.model.Leaderboard
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 
-@Database(entities = [Topic::class, Leaderboard::class], version = 1, exportSchema = false)
+@Database(entities = [Quiz::class, Leaderboard::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class QuizRoomDatabase : RoomDatabase() {
     abstract fun quizDao(): QuizDao
@@ -25,7 +25,7 @@ abstract class QuizRoomDatabase : RoomDatabase() {
                         context.applicationContext,
                         QuizRoomDatabase::class.java,
                         "quiz_database"
-                    ).build()
+                    ).fallbackToDestructiveMigration().build()
                 }
             }
             return INSTANCE as QuizRoomDatabase

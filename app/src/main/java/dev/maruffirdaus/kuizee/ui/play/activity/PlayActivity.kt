@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import dev.maruffirdaus.kuizee.R
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.ActivityPlayBinding
 import dev.maruffirdaus.kuizee.ui.play.fragment.PlayTitleFragment
 
 class PlayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayBinding
-    private lateinit var topicData: Topic
+    private lateinit var quizData: Quiz
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +26,20 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        topicData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_TOPIC, Topic::class.java) ?: Topic()
+        quizData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EXTRA_QUIZ, Quiz::class.java) ?: Quiz()
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(EXTRA_TOPIC) ?: Topic()
+            intent.getParcelableExtra(EXTRA_QUIZ) ?: Quiz()
         }
     }
 
     private fun setColor() {
-        if (topicData.color != null) {
+        if (quizData.color != null) {
             DynamicColors.applyToActivityIfAvailable(
                 this,
                 DynamicColorsOptions.Builder()
-                    .setContentBasedSource(topicData.color!!)
+                    .setContentBasedSource(quizData.color!!)
                     .build()
             )
         }
@@ -47,7 +47,7 @@ class PlayActivity : AppCompatActivity() {
 
     private fun loadFragment() {
         val bundle = Bundle()
-        bundle.putParcelable(PlayTitleFragment.EXTRA_TOPIC, topicData)
+        bundle.putParcelable(PlayTitleFragment.EXTRA_QUIZ, quizData)
 
         val fragment = PlayTitleFragment()
         fragment.arguments = bundle
@@ -60,6 +60,6 @@ class PlayActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_TOPIC = "extra_topic"
+        const val EXTRA_QUIZ = "extra_quiz"
     }
 }

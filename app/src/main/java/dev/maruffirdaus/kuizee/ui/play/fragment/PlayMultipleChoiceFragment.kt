@@ -187,7 +187,7 @@ class PlayMultipleChoiceFragment : Fragment() {
 
                 questionStatus[playingIndex].isActive = true
 
-                sidebarAdapter.setListQuestion(questionStatus.toList())
+                sidebarAdapter.setListSidebarData(questionStatus.toList())
                 sidebarRecyclerView.adapter = sidebarAdapter
             }
         }

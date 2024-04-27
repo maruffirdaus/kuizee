@@ -7,21 +7,21 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import dev.maruffirdaus.kuizee.data.model.Leaderboard
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 
 @Dao
 interface QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(topicData: Topic)
+    fun insert(quizData: Quiz)
 
     @Update
-    fun update(topicData: Topic)
+    fun update(quizData: Quiz)
 
     @Delete
-    fun delete(topicData: Topic)
+    fun delete(quizData: Quiz)
 
-    @Query("SELECT * FROM topic ORDER BY title ASC")
-    suspend fun getAllTopicData(): List<Topic>
+    @Query("SELECT * FROM quiz ORDER BY title ASC")
+    suspend fun getQuizData(): List<Quiz>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(leaderboardData: Leaderboard)

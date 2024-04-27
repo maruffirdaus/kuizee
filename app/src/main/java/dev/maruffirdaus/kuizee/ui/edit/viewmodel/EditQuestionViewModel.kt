@@ -5,18 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.maruffirdaus.kuizee.data.model.Question
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.data.repository.QuizRepository
 
 class EditQuestionViewModel(application: Application) : ViewModel() {
     private val mQuizRepository: QuizRepository = QuizRepository(application)
 
-    fun insert(topicData: Topic) {
-        mQuizRepository.insert(topicData)
+    fun insert(quizData: Quiz) {
+        mQuizRepository.insert(quizData)
     }
 
-    fun update(topicData: Topic) {
-        mQuizRepository.update(topicData)
+    fun update(quizData: Quiz) {
+        mQuizRepository.update(quizData)
     }
 
     private val _question = MutableLiveData<List<Question>>()

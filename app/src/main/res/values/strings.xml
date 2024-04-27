@@ -29,29 +29,31 @@
 
     <!-- Edit -->
     <string name="edit">Edit</string>
-    <string name="empty_message_edit">There is no quiz added yet, press the Add button to add a new one.</string>
-    <string name="add">Add</string>
+    <string name="empty_message_edit">There is no quiz added yet, press the Add Quiz button to add a new one.</string>
     <string name="refresh">Refresh</string>
     <string name="delete">Delete</string>
     <string name="select_all">Select All</string>
 
-    <string name="add_new_topic">Add new topic</string>
-    <string name="edit_topic">Edit topic</string>
+    <string name="add_quiz">Add Quiz</string>
+    <string name="add_new_quiz">Add new quiz</string>
+    <string name="edit_quiz">Edit quiz</string>
     <string name="set_image">Set Image</string>
     <string name="title">Title</string>
     <string name="desc">Description</string>
     <string name="save">Save</string>
 
+    <string name="add_question">Add Question</string>
     <string name="question">Question</string>
-    <string name="empty_message_edit_question">There is no question added yet, press the Add button to add a new one.</string>
+    <string name="empty_message_edit_question">There is no question added yet, press the Add Question button to add a new one.</string>
     <string name="add_new_question">Add new question</string>
     <string name="edit_question">Edit question</string>
     <string name="question_type">Question type</string>
     <string name="multiple_choice">Multiple choice</string>
     <string name="short_form">Short form</string>
 
+    <string name="add_answer">Add Answer</string>
     <string name="answer">Answer</string>
-    <string name="empty_message_edit_answer">There is no answer added yet, press the Add button to add a new one.</string>
+    <string name="empty_message_edit_answer">There is no answer added yet, press the Add Answer button to add a new one.</string>
     <string name="add_new_answer">Add new answer</string>
     <string name="edit_answer">Edit answer</string>
     <string name="correct_answer">Correct answer</string>

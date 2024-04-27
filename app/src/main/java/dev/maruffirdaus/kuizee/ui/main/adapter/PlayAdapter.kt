@@ -6,19 +6,19 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import dev.maruffirdaus.kuizee.data.model.Topic
+import dev.maruffirdaus.kuizee.data.model.Quiz
 import dev.maruffirdaus.kuizee.databinding.CardRowItemBinding
-import dev.maruffirdaus.kuizee.ui.helper.TopicDiffCallback
+import dev.maruffirdaus.kuizee.ui.helper.QuizDiffCallback
 
 class PlayAdapter : RecyclerView.Adapter<PlayAdapter.TopicPlayViewHolder>() {
-    private val listTopic = ArrayList<Topic>()
+    private val listQuiz = ArrayList<Quiz>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    fun setListTopic(listTopic: List<Topic>) {
-        val diffCallback = TopicDiffCallback(this.listTopic, listTopic)
+    fun setListQuiz(listQuiz: List<Quiz>) {
+        val diffCallback = QuizDiffCallback(this.listQuiz, listQuiz)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.listTopic.clear()
-        this.listTopic.addAll(listTopic)
+        this.listQuiz.clear()
+        this.listQuiz.addAll(listQuiz)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -32,38 +32,38 @@ class PlayAdapter : RecyclerView.Adapter<PlayAdapter.TopicPlayViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TopicPlayViewHolder, position: Int) {
-        holder.bind(listTopic[position])
+        holder.bind(listQuiz[position])
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(listTopic[position])
+            onItemClickCallback.onItemClicked(listQuiz[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return listTopic.size
+        return listQuiz.size
     }
 
     inner class TopicPlayViewHolder(
         private val parent: ViewGroup,
         private val binding: CardRowItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(topicData: Topic) {
+        fun bind(quizData: Quiz) {
             with(binding) {
-                if (topicData.img != null) {
+                if (quizData.img != null) {
                     Glide.with(parent.context)
-                        .load(topicData.img!!.toUri())
+                        .load(quizData.img!!.toUri())
                         .into(media)
                 }
-                title.text = topicData.title
+                title.text = quizData.title
                 title.maxLines = 1
-                supportingText.text = topicData.desc
+                supportingText.text = quizData.desc
                 selectButton.setOnClickListener {
-                    onItemClickCallback.onItemClicked(topicData)
+                    onItemClickCallback.onItemClicked(quizData)
                 }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(topicData: Topic)
+        fun onItemClicked(quizData: Quiz)
     }
 }
